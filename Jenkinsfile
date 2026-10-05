@@ -32,7 +32,7 @@ pipeline {
         stage('Git: Code Checkout') {
             steps {
                 script{
-                    code_checkout("git@github.com:Athithiyan0511/Jenkins-end2ned.git","main")
+                    code_checkout("git@github.com:Athithiyan0511/Jenkins-end2end.git","main")
                 }
             }
         }

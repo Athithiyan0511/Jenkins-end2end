@@ -19,7 +19,7 @@ pipeline {
         stage('Git: Code Checkout') {
             steps {
                 script {
-                    code_checkout("git@github.com:Athithiyan0511/Jenkins-end2ned.git", "main")
+                    code_checkout("git@github.com:Athithiyan0511/Jenkins-end2end.git", "main")
                 }
             }
         }
@@ -61,7 +61,7 @@ pipeline {
                             git commit -m "Update Kubernetes image tags"
 
                             echo "Pushing changes to GitHub:"
-                            git push git@github.com:Athithiyan0511/Jenkins-end2ned.git main
+                            git push git@github.com:Athithiyan0511/Jenkins-end2end.git main
                         '''
                     }
                 }
