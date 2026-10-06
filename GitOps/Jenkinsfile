@@ -54,26 +54,33 @@ pipeline {
         }
         
         stage("Git: Code update and push to GitHub"){
-            steps{
-                script{
-                    withCredentials([gitUsernamePassword(credentialsId: 'github-cred', gitToolName: 'Default')]) {
-                        sh '''
-                        echo "Checking repository status: "
-                        git status
-                    
-                        echo "Adding changes to git: "
-                        git add .
-                        
-                        echo "Commiting changes: "
+    steps{
+        script{
+            withCredentials([gitUsernamePassword(
+                credentialsId: 'github-cred',
+                gitToolName: 'Default'
+            )]) {
+                sh '''
+                    echo "Checking repository status:"
+                    git status
+
+                    echo "Adding changes to git:"
+                    git add .
+
+                    if git diff --cached --quiet; then
+                        echo "No changes to commit."
+                    else
+                        echo "Committing changes:"
                         git commit -m "Updated environment variables"
-                        
-                        echo "Pushing changes to github: "
+
+                        echo "Pushing changes to GitHub:"
                         git push https://github.com/Athithiyan0511/Jenkins-end2end main
-                    '''
-                    }
-                }
+                    fi
+                '''
             }
         }
+    }
+}
     }
   post {
         success {
