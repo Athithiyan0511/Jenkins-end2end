@@ -19,7 +19,7 @@ pipeline {
         stage('Git: Code Checkout') {
             steps {
                 script{
-                    code_checkout("https://github.com/Athithiyan0511/Jenkins-end2end","master")
+                    code_checkout("https://github.com/Athithiyan0511/Jenkins-end2end","main")
                 }
             }
         }
@@ -68,7 +68,7 @@ pipeline {
                         git commit -m "Updated environment variables"
                         
                         echo "Pushing changes to github: "
-                        git push https://github.com/Athithiyan0511/Jenkins-end2end
+                        git push https://github.com/Athithiyan0511/Jenkins-end2end main
                     '''
                     }
                 }
