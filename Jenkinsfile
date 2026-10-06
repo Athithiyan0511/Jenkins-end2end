@@ -4,6 +4,7 @@ pipeline {
     
     environment{
         SONAR_HOME = tool "Sonar"
+        EC2_INSTANCE_ID = "i-0fbfd1d7ab0fab9fd"
     }
     
     parameters {
@@ -97,11 +98,11 @@ pipeline {
             steps{
                 script{
                         dir('backend'){
-                            docker_build("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","aadhi11m")
+                            docker_build("wanderlust-backend-beta",params.BACKEND_DOCKER_TAG,"aadhi11m")
                         }
                     
                         dir('frontend'){
-                            docker_build("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","aadhi11m")
+                            docker_build("wanderlust-frontend-beta",params.FRONTEND_DOCKER_TAG,"aadhi11m")
                         }
                 }
             }
@@ -110,8 +111,8 @@ pipeline {
         stage("Docker: Push to DockerHub"){
             steps{
                 script{
-                    docker_push("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","aadhi11m") 
-                    docker_push("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","aadhi11m")
+                    docker_push("wanderlust-backend-beta",params.BACKEND_DOCKER_TAG,"aadhi11m") 
+                    docker_push("wanderlust-frontend-beta",params.FRONTEND_DOCKER_TAG,"aadhi11m")
                 }
             }
         }
@@ -120,8 +121,8 @@ pipeline {
         success{
             archiveArtifacts artifacts: '*.xml', followSymlinks: false
             build job: "Wanderlust-CD", parameters: [
-                string(name: 'FRONTEND_DOCKER_TAG', value: "${params.FRONTEND_DOCKER_TAG}"),
-                string(name: 'BACKEND_DOCKER_TAG', value: "${params.BACKEND_DOCKER_TAG}")
+                string(name: 'FRONTEND_DOCKER_TAG', value: params.FRONTEND_DOCKER_TAG),
+                string(name: 'BACKEND_DOCKER_TAG', value: params.BACKEND_DOCKER_TAG)
             ]
         }
     }
