@@ -78,9 +78,13 @@ resource "aws_instance" "testinstance" {
   tags = {
     Name = "Automate"
   }
-  
+
   root_block_device {
     volume_size = 30
     volume_type = "gp3"
+  }
+
+  lifecycle {
+    ignore_changes = [ami]
   }
 }
