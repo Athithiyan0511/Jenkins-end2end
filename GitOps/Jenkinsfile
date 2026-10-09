@@ -8,6 +8,28 @@ pipeline {
     }
 
     stages {
+        stage('Validate required Docker image tags') {
+            steps {
+                script {
+                    def tags = [
+                        FRONTEND_DOCKER_TAG: params.FRONTEND_DOCKER_TAG?.trim(),
+                        BACKEND_DOCKER_TAG: params.BACKEND_DOCKER_TAG?.trim()
+                    ]
+
+                    tags.each { name, tag ->
+                        if (!tag) {
+                            error("${name} is empty. Refusing to modify or push Kubernetes manifests.")
+                        }
+                        if (!(tag ==~ /[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}/)) {
+                            error("${name} '${tag}' is not a valid Docker image tag.")
+                        }
+                    }
+
+                    echo "Validated frontend and backend Docker image tags."
+                }
+            }
+        }
+
         stage("Workspace cleanup"){
             steps{
                 script{
